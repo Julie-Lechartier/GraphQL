@@ -22,3 +22,4 @@ On lance le serveur et on accède à GraphQl avec la route :
 ## FIXTURES
 
 Création de fausses données dans la base de données pour tester les scripts GraphQL
+

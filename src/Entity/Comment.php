@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CommentRepository;
 use Doctrine\DBAL\Types\Types;
@@ -29,6 +30,9 @@ class Comment
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Post $post = null;
+
+    #[ApiProperty(readable: true, writable: false)]
+    private ?int $contentLength = null;
 
     public function getId(): ?int
     {
@@ -81,5 +85,10 @@ class Comment
         $this->post = $post;
 
         return $this;
+    }
+
+    public function getContentLength(): int
+    {
+        return $this->content !== null ? mb_strlen($this->content) : 0;
     }
 }

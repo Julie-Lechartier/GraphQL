@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -49,6 +50,18 @@ class Post
      */
     #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'post')]
     private Collection $media;
+
+
+    // resolver
+
+    #[ApiProperty(readable: true, writable: false)]
+    private ?int $likesCount = null;
+
+    #[ApiProperty(readable: true, writable: false)]
+    private ?int $commentsCount = null;
+
+    #[ApiProperty(readable: true, writable: false)]
+    private ?string $excerpt = null;
 
     public function __construct()
     {
@@ -186,5 +199,24 @@ class Post
         }
 
         return $this;
+    }
+
+    public function getLikesCount(): int
+    {
+        return $this->likes->count();
+    }
+
+    public function getCommentsCount(): int
+    {
+        return $this->comments->count();
+    }
+
+    public function getExcerpt(): string
+    {
+        if ($this->content === null) {
+            return '';
+        }
+
+        return mb_substr($this->content, 0, 50).'...';
     }
 }

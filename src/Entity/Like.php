@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\LikeRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,6 +25,12 @@ class Like
     #[ORM\JoinColumn(nullable: false)]
     private ?Post $post = null;
 
+
+    #[ApiProperty(readable: true, writable: false)]
+    private ?int $postId = null;
+
+    #[ApiProperty(readable: true, writable: false)]
+    private ?int $userId = null;
 
     public function getId(): ?int
     {
@@ -52,6 +59,16 @@ class Like
         $this->post = $post;
 
         return $this;
+    }
+
+    public function getPostId(): ?int
+    {
+        return $this->post?->getId();
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->user?->getId();
     }
 
 }

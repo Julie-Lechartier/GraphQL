@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -63,6 +64,14 @@ class User
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     private ?Media $avatar = null;
 
+    #[ApiProperty(readable: true, writable: false)]
+    private ?string $fullName = null;
+
+    #[ApiProperty(readable: true, writable: false)]
+    private ?int $followersCount = null;
+
+    #[ApiProperty(readable: true, writable: false)]
+    private ?int $followingCount = null;
 
     public function __construct()
     {
@@ -257,4 +266,18 @@ class User
         return $this;
     }
 
+    public function getFullName(): string
+    {
+        return trim($this->firstName.' '.$this->lastName);
+    }
+
+    public function getFollowersCount(): int
+    {
+        return $this->followers->count();
+    }
+
+    public function getFollowingCount(): int
+    {
+        return $this->following->count();
+    }
 }
